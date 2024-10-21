@@ -50,7 +50,7 @@ export const generateReport = async (req, res) => {
         impressions: campaign.impressions,      })),
     };
 
-    const filePath = `./reports/ezymetrics-report.pdf`;
+    const filePath = `./reports/report.pdf`;
 
     // Generate the PDF report
     generatePDFReport(report, filePath);
