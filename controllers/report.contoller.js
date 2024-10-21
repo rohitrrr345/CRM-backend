@@ -56,7 +56,7 @@ export const generateReport = async (req, res) => {
     generatePDFReport(report, filePath);
 
     if (leads.length >8) {
-      await sendAlert('Too many leads in the system!');
+      await sendAlert('Too many leads in the system You have to check it now for further cases!');
     }
 
     res.status(200).json({ message: `PDF Report generated`, reportPath: filePath });
