@@ -5,9 +5,8 @@ const campaignSchema = new mongoose.Schema({
   platform: String,
   clicks: Number,
   impressions: Number,
-  createdAt: { type: Date, default: Date.now },
+  createdAt: { type: Date, default: Date.now }
 });
 
 const Campaign = mongoose.model('Campaign', campaignSchema);
-
 export default Campaign;

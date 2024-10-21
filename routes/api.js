@@ -1,7 +1,6 @@
 import express from 'express';
-import { fetchLeads } from '../controllers/Crm.controller.js';
 import { generateReport } from '../controllers/report.contoller.js';
-import { fetchCampaigns } from '../controllers/Marketing.contoller.js';
+import { fetchCampaigns, fetchLeads } from '../controllers/Crm.controller.js';
 
 const router = express.Router();
 
