@@ -10,11 +10,9 @@ export const generatePDFReport = async (report, leads = [], campaigns = []) => {
   doc.text(`Total Campaigns: ${report.totalCampaigns}`);
   doc.moveDown();
 
-  // Add a timestamp for when the report is generated
   doc.text('Generated at: ' + new Date().toLocaleString());
   doc.moveDown();
 
-  // Section for Lead details
   doc.fontSize(16).text('Lead Information:', { underline: true });
   leads.forEach((lead, index) => {
     doc.fontSize(12).text(`${index + 1}. Name: ${lead.name}`);
@@ -24,7 +22,6 @@ export const generatePDFReport = async (report, leads = [], campaigns = []) => {
     doc.moveDown();
   });
 
-  // Section for Campaign details
   doc.fontSize(16).text('Campaign Information:', { underline: true });
   campaigns.forEach((campaign, index) => {
     doc.fontSize(12).text(`${index + 1}. Name: ${campaign.name}`);
@@ -34,7 +31,6 @@ export const generatePDFReport = async (report, leads = [], campaigns = []) => {
     doc.moveDown();
   });
 
-  // Finalize the document and end the stream
   doc.end();
 
   return doc;

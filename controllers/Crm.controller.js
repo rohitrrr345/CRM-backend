@@ -8,8 +8,14 @@ const dummyLeads = [
 ];
 
 const dummyCampaigns = [
-  { name: 'Summer Campaign', platform: 'Google Ads', clicks: 120, impressions: 5000 },
-  { name: 'Winter Campaign', platform: 'Facebook Ads', clicks: 80, impressions: 3000 },
+  { name: 'DEad zone arctic', platform: 'Arctic', clicks: 100, impressions: 500 },
+  { name: 'Frozzen Guana', platform: 'XXXeratic', clicks: 50, impressions: 300 },
+    { name: 'Frozzen Guana', platform: 'XXXeratic', clicks: 50, impressions: 300 },
+    { name: 'DEad zone arctic', platform: 'Arctic', clicks: 100, impressions: 500 },
+    { name: 'Frozzen Guana', platform: 'XXXeratic', clicks: 50, impressions: 300 }, 
+            { name: 'Frozzen Guana', platform: 'XXXeratic', clicks: 50, impressions: 300 },
+            { name: 'DEad zone arctic', platform: 'Arctic', clicks: 100, impressions: 500 },
+            { name: 'Frozzen Guana', platform: 'XXXeratic', clicks: 50, impressions: 300 },
 ];
 
 export const fetchLeads = async (req, res) => {
