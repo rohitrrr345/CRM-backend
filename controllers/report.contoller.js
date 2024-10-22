@@ -1,65 +1,38 @@
 import Lead from '../models/Lead.js';
 import Campaign from '../models/Campaign.js';
+import { runETLProcess } from '../utils/etlProcess.js';
 import { sendAlert } from '../services/Notification.js';
-import PDFDocument from 'pdfkit';
-import fs from 'fs';
-
-// Helper function to generate PDF
-const generatePDFReport = (reportData, filePath) => {
-  const doc = new PDFDocument();
-  doc.pipe(fs.createWriteStream(filePath));
-
-  doc.fontSize(20).text('EzyMetrics Report', { align: 'center' });
-  doc.moveDown();
-
-  doc.fontSize(12).text(`Total Leads: ${reportData.totalLeads}`);
-  doc.text(`Total Campaigns: ${reportData.totalCampaigns}`);
-  doc.moveDown();
-
-  doc.text('Lead Details:');
-  reportData.leads.forEach(lead => {
-    doc.text(`Name: ${lead.name}, Email: ${lead.email}, Phone: ${lead.phone}`);
-  });
-
-  doc.moveDown();
-  doc.text('Campaign Details:');
-  reportData.campaigns.forEach(campaign => {
-    doc.text(`Name: ${campaign.name}, Platform: ${campaign.platform}, Clicks: ${campaign.clicks}, Impressions: ${campaign.impressions}`);
-  });
-
-  doc.end();
-};
+import { generatePDFReport } from '../services/ReportService.js';
 
 export const generateReport = async (req, res) => {
   try {
-    const leads = await Lead.find({});
-    const campaigns = await Campaign.find({});
-    
+    // Step 1: Run the ETL process to extract, transform, and load data
+    await runETLProcess();
+
+    // Step 2: Query the transformed data (leads and campaigns) from MongoDB
+    const leads = await Lead.find({}) || [];  // Fallback to an empty array if undefined
+    const campaigns = await Campaign.find({}) || [];  // Fallback to an empty array if undefined
+
+    // Step 3: Generate metrics and include conditions for sending alerts
     const report = {
       totalLeads: leads.length,
       totalCampaigns: campaigns.length,
-      leads: leads.map(lead => ({
-        name: lead.name,
-        email: lead.email,
-        phone: lead.phone,
-      })),
-      campaigns: campaigns.map(campaign => ({
-        name: campaign.name,
-        platform: campaign.platform,
-        clicks: campaign.clicks,
-        impressions: campaign.impressions,      })),
     };
 
-    const filePath = `./reports/report.pdf`;
-
-    // Generate the PDF report
-    generatePDFReport(report, filePath);
-
-    if (leads.length >8) {
-      await sendAlert('Too many leads in the system You have to check it now for further cases!');
+    // Step 4: Send alert if there are too many leads
+    if (leads.length > 50) {
+      await sendAlert('Too many leads in the system!');
     }
 
-    res.status(200).json({ message: `PDF Report generated`, reportPath: filePath });
+    // Step 5: Generate PDF Report, including all leads and campaign information
+    const pdf = await generatePDFReport(report, leads, campaigns);
+
+    // Step 6: Send the PDF report to the user
+    res.set({
+      'Content-Type': 'application/pdf',
+      'Content-Disposition': 'attachment; filename=report.pdf',
+    });
+    pdf.pipe(res);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
