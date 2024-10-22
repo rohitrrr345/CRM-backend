@@ -9,7 +9,7 @@ const generatePDFReport = (reportData, filePath) => {
   const doc = new PDFDocument();
   doc.pipe(fs.createWriteStream(filePath));
 
-  doc.fontSize(16).text('EzyMetrics Report', { align: 'center' });
+  doc.fontSize(20).text('EzyMetrics Report', { align: 'center' });
   doc.moveDown();
 
   doc.fontSize(12).text(`Total Leads: ${reportData.totalLeads}`);

@@ -1,7 +1,6 @@
 import Campaign from '../models/Campaign.js';
 import { transformCampaignData } from '../utils/etlProcess.js';
 
-// Simulated fetching campaigns from a marketing platform
 export const fetchCampaigns = async (req, res) => {
   try {
     const rawCampaigns = [
