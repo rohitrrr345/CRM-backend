@@ -17,9 +17,10 @@ export const generateReport = async (req, res) => {
       totalCampaigns: campaigns.length,
     };
 
-    
-    if (leads.length > 50) {
+    console.log(leads.length);
+    if (leads.length>20) {
       await sendAlert('Too many leads in the system!');
+      console.log("Too many leads in the system!");
     }
 
     const pdf = await generatePDFReport(report, leads, campaigns);

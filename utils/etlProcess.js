@@ -34,7 +34,7 @@ export const runETLProcess = async () => {
     }));
 
     await Lead.insertMany(transformedLeads);
-    await Campaign.insertMany(transformedCampaigns);
+    await Campaign.insertMany(transformedCampaigns);  
 
     console.log('ETL process completed successfully');
   } catch (error) {
